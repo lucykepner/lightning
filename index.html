@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>National Lightning Detection Network - Ground Strikes - July 2023</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <link rel="icon" href="data:;base64,="/>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script type="text/javascript" src="index.js"></script>
+  <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        html, body, #map {
+            height: 100%;
+            width: 100%;
+        }
+  </style>
+</head>
+<body>
+
+  <div id="map"></div>
+  <!-- <script type="module" src="./index.js"></script> -->
+
+  <script type="text/javascript">
+
+  var map = L.map('map').setView([39.59, -106.06], 4);
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', 
+  {
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+	subdomains: 'abcd',
+	maxZoom: 20
+  }).addTo(map);
+
+  function getColor(d) {
+		if (d == 721){
+			return '#EE1431'
+			}
+    else if (d == 714){
+			return '#3393C3'
+			}
+    else if (d == 712){
+			return 'pink'
+			}
+    else if (d == 692){
+			return '#00a5a8'
+			}
+    else if (d == 722){
+      //keystone
+			return '#38B4E8'
+			}
+    else if (d == 730){
+			return '#f18917'
+			}
+    else if (d == 707){
+			return '#662890'
+			}
+    else if (d == 723){
+			return '#37b1e5'
+			}
+    else if (d == 710){
+			return '#ffe800'
+			}
+    else if (d == 720){
+			return '#ffe800'
+			}
+    else if (d == 708){
+			return '#0079c1'
+			}
+    else {
+			return '#000000'
+			}
+	};
+
+  function style(feature) {
+		return {
+			radius: 8,
+			weight: 1,
+			opacity: 1,
+			color: 'white',
+			fillOpacity: 0.8,
+			// fillColor: getColor(feature.properties.route)
+		};
+	}
+
+  function onEachFeature(feature, layer) {
+		layer.bindTooltip("<strong>Lightning Strikes</strong>" +
+			"<br>Lattitude: " + feature.geometry.coordinates[1]+
+      "<br>Longitude: " + feature.geometry.coordinates[0]+
+      "<br>Strikes: " + feature.properties.SUM_TOTAL_COUNT_1
+    );
+  }
+
+  var lightningtrike;
+
+async function getData() {
+  const response = await fetch("./lightningOut.json");
+  const json = await response.json();
+
+  console.log(json);
+  var geojson = {
+        type: "FeatureCollection",
+        features: [],
+      };
+  for (var i in json){
+    var lat =json[i].CENTERLAT;
+    var lon =json[i].CENTERLON;
+    var strikes=json[i].SUM_TOTAL_COUNT_1;
+    
+    geojson.features.push({
+				"type": "Feature",
+				"geometry": {
+				"type": "Point",
+				"coordinates": [lon,lat]
+				},
+				"properties": {
+					"strikes": SUM_TOTAL_COUNT_1,
+				}
+				});
+    };
+    console.log(geojson);
+   
+    
+    lightningStrike = L.geoJson(geojson, {
+			pointToLayer: function(geoJsonPoint, latlng) {
+                        return L.circleMarker(latlng);},
+						onEachFeature: onEachFeature,
+						style:style
+			}).addTo(map);
+  };
+
+getData();
+// setInterval(getData, 11000);
+  </script>
+</body>
+</html>
+	
