@@ -1,5 +1,5 @@
-import data from './lightningOut.json'  assert { type: 'json' }
-console.log(data);
+// import data from './lightningOut.json'  assert { type: 'json' }
+// console.log(data);
 
 
 

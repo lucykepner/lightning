@@ -98,37 +98,39 @@
     );
   }
 
-  var lightningtrike;
-
+  // var strikes;
+let geojson
 async function getData() {
-  const response = await fetch("./lightningOut.json");
+  // https://raw.githubusercontent.com/lucykepner/lightning/main/lightningOut.json
+  const response = await fetch("https://raw.githubusercontent.com/lucykepner/lightning/main/lightningOut.json");
   const json = await response.json();
 
-  console.log(json);
-  var geojson = {
-        type: "FeatureCollection",
-        features: [],
-      };
-  for (var i in json){
-    var lat =json[i].CENTERLAT;
-    var lon =json[i].CENTERLON;
-    var strikes=json[i].SUM_TOTAL_COUNT_1;
+  // console.log("json: ", json);
+  // geojson = {
+  //       type: "FeatureCollection",
+  //       features: [],
+  //     };
+  // for (var i in json){
+  //   var lat =json.features[i].CENTERLAT;
+  //   console.log(lat);
+  //   var lon =json[i].CENTERLON;
+  //   var strikes=json[i].SUM_TOTAL_COUNT_1;
     
-    geojson.features.push({
-				"type": "Feature",
-				"geometry": {
-				"type": "Point",
-				"coordinates": [lon,lat]
-				},
-				"properties": {
-					"strikes": SUM_TOTAL_COUNT_1,
-				}
-				});
-    };
-    console.log(geojson);
+  //   geojson.features.push({
+	// 			"type": "Feature",
+	// 			"geometry": {
+	// 			"type": "Point",
+	// 			"coordinates": [lon,lat]
+	// 			},
+	// 			"properties": {
+	// 				"strikes": strikes,
+	// 			}
+	// 			});
+  //   };
+  //   console.log("geojson: ", geojson);
    
-    
-    lightningStrike = L.geoJson(geojson, {
+    // lightningStrike = L.geoJson(geojson).addTo.map();
+    let lightningStrike = L.geoJson(geojson, {
 			pointToLayer: function(geoJsonPoint, latlng) {
                         return L.circleMarker(latlng);},
 						onEachFeature: onEachFeature,
@@ -137,6 +139,7 @@ async function getData() {
   };
 
 getData();
+console.log
 // setInterval(getData, 11000);
   </script>
 </body>
