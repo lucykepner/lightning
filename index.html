@@ -17,13 +17,14 @@
             padding: 0;
             margin: 0;
         }
-        html, body, #map {
+        html, body {
             height: 100%;
-            width: 100%;
+            /* width: 100%; */
         }
 
         #map {
-          padding: 5px;
+          /* margin: 5px; */
+          min-height: 100%;
         }
 
         #map-name {
@@ -42,17 +43,28 @@
             background: rgba(255,255,255,0.8);
             box-shadow: 0 0 15px rgba(0,0,0,0.2);
             border-radius: 3px;
-            /* margin: 10px; */
+            margin: 10px;
             z-index: 5000;
         }
         .info h4 {
             margin: 5px;
             color: #717171;
         }
+
+        .legend {
+            line-height: 18px;
+            color: #555;
+}
+        .legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
+        }
   </style>
 </head>
 <body>
-  <div id="map-name">National Lightning Detection Network - Ground Strikes - July 2023 </div>
   <div id="map"></div>
 
   <script type="text/javascript">
@@ -89,12 +101,12 @@
 
   function style(feature) {
 		return {
+			fillColor: getColor(feature.properties.SUM_TOTAL_),
 			radius: 2,
 			weight: .1,
 			opacity: .25,
 			color: '#ffffff',
 			fillOpacity: 0.5,
-			fillColor: getColor(feature.properties.SUM_TOTAL_)
 		};
 	}
 
@@ -138,7 +150,10 @@ info.update = function (props) {
 
 info.addTo(map);
 
-let legend = L.control({position: 'bottomright'});
+let legend = L.control({
+                position: 'bottomleft',
+                title: 'Lightning Strikes'
+              });
 
 legend.onAdd = function (map) {
 
@@ -146,6 +161,13 @@ legend.onAdd = function (map) {
         grades = [0, 10, 20, 50, 100, 200, 500, 1000],
         labels = [];
 
+        div.innerHTML += "<h4>Lightning Strikes</h4>";
+        // div.innerHTML += '<i style="background-color: #477AC2"></i><span>0-10</span><br>';
+        // div.innerHTML += '<i style="background: #448D40"></i><span>11-20</span><br>';
+        // div.innerHTML += '<i style="background: #E6E696"></i><span>21-50</span><br>';
+        // div.innerHTML += '<i style="background: #E8E6E0"></i><span>51-100</span><br>';
+        // div.innerHTML += '<i style="background: #FFFFFF"></i><span>101-200</span><br>';
+        
     // loop through our density intervals and generate a label with a colored square for each interval
     for (var i = 0; i < grades.length; i++) {
         div.innerHTML +=
