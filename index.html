@@ -2,7 +2,7 @@
 <html>
 <head>
 	
-	<title>National Lightning Detection Network - Ground Strikes - July 2023</title>
+	<title>NLDN - Ground Strikes - July 2023</title>
 
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -21,16 +21,25 @@
             height: 100%;
             width: 100%;
         }
+
+        #map-name {
+          font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+          font-size: 2em;
+          /* max-height: 2em; */
+          text-align: center;
+          z-index: 500;
+          background-color: transparent;
+
+        }
   </style>
 </head>
 <body>
-
+  <div id="map-name">National Lightning Detection Network - Ground Strikes - July 2023 </div>
   <div id="map"></div>
-  <!-- <script type="module" src="./index.js"></script> -->
 
   <script type="text/javascript">
 
-  var map = L.map('map').setView([39.59, -106.06], 4);
+  var map = L.map('map').setView([38.59, -98.06], 4.5);
 
   L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', 
   {
