@@ -40,53 +40,34 @@
   }).addTo(map);
 
   function getColor(d) {
-		if (d == 721){
-			return '#EE1431'
+		if (d <= 5){
+			return '#ffdd'
 			}
-    else if (d == 714){
-			return '#3393C3'
+    else if (d <= 50){
+			return '#ffdd47'
 			}
-    else if (d == 712){
-			return 'pink'
+    else if (d <= 200){
+			return '#fecf02'
 			}
-    else if (d == 692){
-			return '#00a5a8'
+    else if (d <= 500){
+			return '#fb7830'
 			}
-    else if (d == 722){
-      //keystone
-			return '#38B4E8'
-			}
-    else if (d == 730){
-			return '#f18917'
-			}
-    else if (d == 707){
-			return '#662890'
-			}
-    else if (d == 723){
-			return '#37b1e5'
-			}
-    else if (d == 710){
-			return '#ffe800'
-			}
-    else if (d == 720){
-			return '#ffe800'
-			}
-    else if (d == 708){
-			return '#0079c1'
+    else if (d <= 1000){
+			return '#fe2d2d'
 			}
     else {
-			return '#000000'
+			return '#de0c1c'
 			}
 	};
 
   function style(feature) {
 		return {
-			radius: 8,
-			weight: 1,
-			opacity: 1,
-			color: 'white',
-			fillOpacity: 0.8,
-			// fillColor: getColor(feature.properties.route)
+			radius: 2,
+			weight: .1,
+			opacity: .25,
+			color: '#ffffff',
+			fillOpacity: 0.5,
+			fillColor: getColor(feature.properties.SUM_TOTAL_)
 		};
 	}
 
@@ -94,53 +75,27 @@
 		layer.bindTooltip("<strong>Lightning Strikes</strong>" +
 			"<br>Lattitude: " + feature.geometry.coordinates[1]+
       "<br>Longitude: " + feature.geometry.coordinates[0]+
-      "<br>Strikes: " + feature.properties.SUM_TOTAL_COUNT_1
+      "<br>Strikes: " + feature.properties.SUM_TOTAL_
     );
   }
 
-  // var strikes;
 let geojson
 async function getData() {
-  // https://raw.githubusercontent.com/lucykepner/lightning/main/lightningOut.json
-  const response = await fetch("https://raw.githubusercontent.com/lucykepner/lightning/main/lightningOut.json");
-  const json = await response.json();
-
-  // console.log("json: ", json);
-  // geojson = {
-  //       type: "FeatureCollection",
-  //       features: [],
-  //     };
-  // for (var i in json){
-  //   var lat =json.features[i].CENTERLAT;
-  //   console.log(lat);
-  //   var lon =json[i].CENTERLON;
-  //   var strikes=json[i].SUM_TOTAL_COUNT_1;
-    
-  //   geojson.features.push({
-	// 			"type": "Feature",
-	// 			"geometry": {
-	// 			"type": "Point",
-	// 			"coordinates": [lon,lat]
-	// 			},
-	// 			"properties": {
-	// 				"strikes": strikes,
-	// 			}
-	// 			});
-  //   };
-  //   console.log("geojson: ", geojson);
+  const response = await fetch("https://raw.githubusercontent.com/lucykepner/lightning/main/lightning_july23.geojson");
+  const geojson = await response.json();
+  
+  console.log("geojson: ", geojson);
    
-    // lightningStrike = L.geoJson(geojson).addTo.map();
-    let lightningStrike = L.geoJson(geojson, {
-			pointToLayer: function(geoJsonPoint, latlng) {
-                        return L.circleMarker(latlng);},
-						onEachFeature: onEachFeature,
-						style:style
-			}).addTo(map);
-  };
+  let lightningStrike = L.geoJson(geojson, {
+    pointToLayer: function(geoJsonPoint, latlng) {
+                      return L.circleMarker(latlng);},
+          onEachFeature: onEachFeature,
+          style:style
+    }).addTo(map);
+};
 
 getData();
-console.log
-// setInterval(getData, 11000);
+
   </script>
 </body>
 </html>
